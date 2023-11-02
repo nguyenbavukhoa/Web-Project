@@ -6,8 +6,6 @@
 
 
 ### Demo
-https://nguyenbavukhoa.github.io/Web-demo/
 
-#### ! Tụi em chạy ở 1 project public khác ạ !
 
 ### Hình ảnh giao diện
