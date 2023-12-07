@@ -7,7 +7,7 @@
 ### Demo
 
 ### Link page
-https://nguyenbavukhoa.github.io/Web-demo/
+https://nguyenbavukhoa.github.io/Web-Project/
 
 ### Hình ảnh giao diện
 
