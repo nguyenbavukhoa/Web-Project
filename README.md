@@ -9,6 +9,9 @@
 ### Link page
 https://nguyenbavukhoa.github.io/Web-Project/
 
+### Link page Admin
+https://nguyenbavukhoa.github.io/Web-Project/admin.html
+
 ### Hình ảnh giao diện
 
 ### Ảnh chi tiết sản phầm
