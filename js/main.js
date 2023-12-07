@@ -1,26 +1,54 @@
+// Close popup 
+const body = document.querySelector("body");
+
 // Auto hide header on scroll
 const headerNav = document.querySelector(".header-bottom");
+const advancedSearch = document.querySelector(".advanced-search");
+const mainMenu = document.querySelector(".main-menu");
 let lastScrollY = window.scrollY;
 
 window.addEventListener("scroll", () => {
     if (lastScrollY < window.scrollY) {
         headerNav.classList.add("hide")
+
     } else {
         headerNav.classList.remove("hide")
+        advancedSearch.classList.remove("hide");
     }
     lastScrollY = window.scrollY;
 })
 
-// Auto switch main-wrapper
+// close searchAdvanced
+function closeSearchAdvanced() {
+    document.querySelector('#trangchu .home-slider').classList.remove("hide");
+    document.querySelector('#home-service').style.display = "flex";
+    document.querySelector('#home-title .home-title').innerHTML = "KHÁM PHÁ THỰC ĐƠN CỦA CHÚNG TÔI";
+    advancedSearch.classList.remove("open");
+}
 
-var counter = 1;
-setInterval(function () {
-    document.getElementById('radio' + counter).checked = true;
-    counter++;
-    if (counter > 4) {
-        counter = 1;
-    }
-}, 3000);
+function changeSearchPage() {
+    document.querySelector('#trangchu .home-slider').classList.add("hide");
+    document.querySelector('#home-service').style.display = "none";
+    document.querySelector('#home-title .home-title').innerHTML = "Kết quả tìm kiếm";
+    advancedSearch.classList.add("open");
+}
+
+
+// Auto switch main-wrapper
+lastPath = window.location.pathname.split('/').pop();
+
+if (lastPath == 'index.html') {
+    var counter = 1;
+    let currentUrl = window.location.href;
+    console.log(currentUrl);
+    setInterval(function () {
+        document.getElementById('radio' + counter).checked = true;
+        counter++;
+        if (counter > 4) {
+            counter = 1;
+        }
+    }, 2500);
+}
 
 // get datas from products.json 
 function uploadProduct(showProduct) {
@@ -59,88 +87,181 @@ function uploadProduct(showProduct) {
     }
     listProducts.innerHTML = productHtml;
 
+
 }
 
 window.onload = uploadProduct(JSON.parse(localStorage.getItem('products')));
-// Find Product
-var productAll = JSON.parse(localStorage.getItem('products'));
-function searchProducts() {
-    let result = productAll;
-    let valueSearchInput = document.querySelector('.form-search-input').value;
-    result = valueSearchInput == "" ? result : result.filter(item => {
-        return item.title.toString().toUpperCase().includes(valueSearchInput.toString().toUpperCase());
-    })
-    console.log(result);
-    showHomeProduct(result);
 
-}
-
-function showCategory(category) {
-    console.log(category);
-    let result = productAll;
-    result = category == "" ? result : result.filter(item => {
-        return item.category.toString().toUpperCase().includes(category.toString().toUpperCase());
-    })
-    console.log(result);
-    showHomeProduct(result);
-}
-
-// Phan Trang
-let thisPage = 1;
-let perPage = 12;
-let list = document.querySelectorAll('.product-grid .product-preview');
-
-function loadItem() {
-    let beginGet = perPage * (thisPage - 1);
-    let endGet = perPage * thisPage - 1;
-    list.forEach((item, index) => {
-        if (index >= beginGet && index <= endGet) {
-            item.style.display = 'block';
-        } else {
-            item.style.display = 'none';
-        }
-    })
-    listPage();
-}
-
-loadItem();
-
-function listPage() {
-    let count = Math.ceil((list.length / perPage < 1 ? 0 : list.length / perPage));
-    document.querySelector('.listPage').innerHTML = '';
-
-    if (thisPage != 1) {
-        let prev = document.createElement('li');
-        prev.innerText = 'Prev';
-        prev.setAttribute('onclick', 'changePage(' + (thisPage - 1) + ')');
-        document.querySelector('.listPage').appendChild(prev);
-    }
-
-    for (i = 1; i <= count; i++) {
-        let newPage = document.createElement('li');
-        newPage.innerText = i;
-        if (i == thisPage) {
-            newPage.classList.add('active');
-        }
-        newPage.setAttribute('onclick', 'changePage(' + i + ')');
-        document.querySelector('.listPage').appendChild(newPage);
-    }
-
-    if (thisPage != count && count > 0) {
-        let next = document.createElement('li');
-        next.innerText = 'Next';
-        next.setAttribute('onclick', 'changePage(' + (thisPage + 1) + ')');
-        document.querySelector('.listPage').appendChild(next);
-    }
-}
-
-function changePage(index) {
-    thisPage = index;
-    loadItem();
-}
 
 function showHomeProduct(products) {
     uploadProduct(products);
     list = document.querySelectorAll('.product-grid .product-preview');
     loadItem();
 }
+
+// Kiểm tra xem có tài khoản đăng nhập không ?
+function kiemtradangnhap() {
+    let currentUser = localStorage.getItem('currentuser');
+    if (currentUser != null) {
+        let user = JSON.parse(currentUser);
+        document.querySelector('.auth-container').innerHTML = `<span class="text-tk">${user.fullname} <i class="fa-sharp fa-solid fa-caret-down"></span>`
+        document.querySelector('.header-middle-right-menu').innerHTML = `<li><a href="javascript:;" onclick="myAccount()"><i class="fa-light fa-circle-user"></i> Tài khoản của tôi</a></li>
+            <li><a href="javascript:;" onclick="orderHistory()"><i class="fa-regular fa-bags-shopping"></i> Đơn hàng đã mua</a></li>
+            <li class="border"><a id="logout" href="javascript:;"><i class="fa-light fa-right-from-bracket"></i> Thoát tài khoản</a></li>`
+        document.querySelector('#logout').addEventListener('click', logOut);
+        document.querySelector('.user-icon').innerHTML = '<i class="fa-solid fa-user"></i>'
+    }
+}
+
+window.onload = kiemtradangnhap();
+
+function logOut() {
+    let accounts = JSON.parse(localStorage.getItem('accounts'));
+    user = JSON.parse(localStorage.getItem('currentuser'));
+    let vitri = accounts.findIndex(item => item.phone == user.phone)
+    accounts[vitri].cart.length = 0;
+    for (let i = 0; i < user.cart.length; i++) {
+        accounts[vitri].cart[i] = user.cart[i];
+    }
+    localStorage.setItem('accounts', JSON.stringify(accounts));
+    localStorage.removeItem('currentuser');
+    window.location = "./index.html";
+}
+
+
+// Chuyển đổi trang chủ và trang thông tin tài khoản
+function myAccount() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('trangchu').classList.add('hide');
+    document.getElementById('order-history').classList.remove('open');
+    document.getElementById('account-user').classList.add('open');
+    advancedSearch.style.display = 'none';
+    document.querySelector('#account-user .main-account').style.height = '700px';
+    mainMenu.style.display = 'none';
+    document.querySelector('.listPage').style.display = 'none';
+}
+
+// Chuyển đổi trang chủ và trang xem lịch sử đặt hàng 
+function orderHistory() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('account-user').classList.remove('open');
+    document.getElementById('trangchu').classList.add('hide');
+    document.getElementById('order-history').classList.add('open');
+    advancedSearch.style.display = 'none';
+    document.querySelector('#order-history .main-account').style.minHeight = '700px';
+    mainMenu.style.display = 'none';
+    document.querySelector('.listPage').style.display = 'none';
+}
+
+function emailIsValid(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
+// Thay doi thong tin
+function changeInformation() {
+    toast({ title: 'Success', message: 'Cập nhật thông tin thành công !', type: 'success', duration: 3000 });
+}
+
+
+// Đổi mật khẩu 
+function changePassword() {
+    toast({ title: 'Success', message: 'Đổi mật khẩu thành công !', type: 'success', duration: 3000 });
+}
+
+
+
+// Open & Close Cart
+function openCart() {
+    document.querySelector('.modal-cart').classList.add('open');
+    body.style.overflow = "hidden";
+}
+
+function closeCart() {
+    document.querySelector('.modal-cart').classList.remove('open');
+    body.style.overflow = "auto";
+}
+
+// Xu ly ngay nhan hang
+let today = new Date();
+let ngaymai = new Date();
+let ngaykia = new Date();
+ngaymai.setDate(today.getDate() + 1);
+ngaykia.setDate(today.getDate() + 2);
+let dateorderhtml = `<a href="javascript:;" class="pick-date active" data-date="${today}">
+    <span class="text">Hôm nay</span>
+    <span class="date">${today.getDate()}/${today.getMonth() + 1}</span>
+    </a>
+    <a href="javascript:;" class="pick-date" data-date="${ngaymai}">
+        <span class="text">Ngày mai</span>
+        <span class="date">${ngaymai.getDate()}/${ngaymai.getMonth() + 1}</span>
+    </a>
+
+    <a href="javascript:;" class="pick-date" data-date="${ngaykia}">
+        <span class="text">Ngày kia</span>
+        <span class="date">${ngaykia.getDate()}/${ngaykia.getMonth() + 1}</span>
+</a>`
+document.querySelector('.date-order').innerHTML = dateorderhtml;
+let pickdate = document.getElementsByClassName('pick-date')
+for(let i = 0; i < pickdate.length; i++) {
+    pickdate[i].onclick = function () {
+        document.querySelector(".pick-date.active").classList.remove("active");
+        this.classList.add('active');
+    }
+}
+
+let priceFinal = document.getElementById("checkout-cart-price-final");
+
+// Xu ly hinh thuc giao hang
+let giaotannoi = document.querySelector('#giaotannoi');
+let tudenlay = document.querySelector('#tudenlay');
+let tudenlayGroup = document.querySelector('#tudenlay-group');
+let chkShip = document.querySelectorAll(".chk-ship");
+
+tudenlay.addEventListener('click', () => {
+    giaotannoi.classList.remove("active");
+    tudenlay.classList.add("active");
+    chkShip.forEach(item => {
+        item.style.display = "none";
+    });
+    tudenlayGroup.style.display = "block";
+    priceFinal.innerText = '750.000 đ';
+
+})
+
+giaotannoi.addEventListener('click', () => {
+    tudenlay.classList.remove("active");
+    giaotannoi.classList.add("active");
+    tudenlayGroup.style.display = "none";
+    chkShip.forEach(item => {
+        item.style.display = "flex";
+    });
+
+    priceFinal.innerText = '780.000 đ';
+
+})
+
+// Su kien khu nhan nut dat hang
+document.querySelector(".complete-checkout-btn").onclick = () => {
+    closeCart();
+    toast({ title: 'Thành công', message: 'Đặt hàng thành công !', type: 'success', duration: 1000 });
+    setTimeout((e) => {
+        window.location = "./index.html";
+    }, 2000);
+}
+
+
+//Open Page Checkout
+let nutthanhtoan = document.querySelector('.thanh-toan')
+let checkoutpage = document.querySelector('.checkout-page');
+nutthanhtoan.addEventListener('click', () => {
+    checkoutpage.classList.add('active');
+    closeCart();
+    body.style.overflow = "hidden"
+})
+
+// Close Page Checkout
+function closecheckout() {
+    checkoutpage.classList.remove('active');
+    body.style.overflow = "auto"
+}
+
