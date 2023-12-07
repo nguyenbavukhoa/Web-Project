@@ -702,6 +702,11 @@ input[type=number] {
     color: white;
 }
 
+.listPage li:hover  {
+    background-color: rgb(122, 14, 14);
+    color: white;
+}
+
 
 /* Checkout Page */
 
