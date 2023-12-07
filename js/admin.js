@@ -171,7 +171,7 @@ let products = [{
 },
 {
     id: 12,
-    status: 1,
+    status: 0,
     title: 'Há cảo sò điệp (10 viên)',
     img: './assets/img/products/ha_cao.jpg',
     category: 'Món mặn',
@@ -194,7 +194,7 @@ let orders = [
         "diachinhan": "123124",
         "thoigiandat": "2023-12-07T03:29:37.206Z",
         "tongtien": 2703000,
-        "trangthai": 0
+        "trangthai": 1
     },
     {
         "id": "DH2",
@@ -208,7 +208,7 @@ let orders = [
         "diachinhan": "273 An Dương Vương, Phường 3, Quận 5",
         "thoigiandat": "2023-12-07T03:31:18.143Z",
         "tongtien": 2820000,
-        "trangthai": 1
+        "trangthai": 0
     },
     {
         "id": "DH1",
@@ -222,19 +222,19 @@ let orders = [
         "diachinhan": "123124",
         "thoigiandat": "2023-12-07T03:29:37.206Z",
         "tongtien": 200000,
-        "trangthai": 0
+        "trangthai": 1
     }
 ];
 
 let orderDetails = [
-    {"id":1,"price":200000,"soluong":1,"note":"Không có ghi chú","madon":"DH1"},
-    {"id":2,"soluong":2,"note":"Không có ghi chú","madon":"DH2","price":180000},
-    {"id":5,"soluong":3,"note":"Không có ghi chú","madon":"DH2","price":280000},
-    {"id":6,"soluong":3,"note":"Không có ghi chú","madon":"DH2","price":540000},
-    {"id":4,"soluong":2,"note":"Không có ghi chú","madon":"VM1","price":699000},
-    {"id":10,"soluong":5,"note":"Không có ghi chú","madon":"VM1","price":25000},
-    {"id":11,"soluong":3,"note":"Không có ghi chú","madon":"VM1","price":60000},
-    {"id":1,"soluong":5,"note":"Không có ghi chú","madon":"VM1","price":200000},
+    { "id": 1, "price": 200000, "soluong": 1, "note": "Không có ghi chú", "madon": "DH1" },
+    { "id": 2, "soluong": 2, "note": "Không có ghi chú", "madon": "DH2", "price": 180000 },
+    { "id": 5, "soluong": 3, "note": "Không có ghi chú", "madon": "DH2", "price": 280000 },
+    { "id": 6, "soluong": 3, "note": "Không có ghi chú", "madon": "DH2", "price": 540000 },
+    { "id": 4, "soluong": 2, "note": "Không có ghi chú", "madon": "VM1", "price": 699000 },
+    { "id": 10, "soluong": 5, "note": "Không có ghi chú", "madon": "VM1", "price": 25000 },
+    { "id": 11, "soluong": 3, "note": "Không có ghi chú", "madon": "VM1", "price": 60000 },
+    { "id": 1, "soluong": 5, "note": "Không có ghi chú", "madon": "VM1", "price": 200000 },
 ];
 
 
@@ -398,7 +398,9 @@ let btnUpdateProductIn = document.getElementById("update-product-button");
 
 btnUpdateProductIn.addEventListener("click", (e) => {
     e.preventDefault();
-    toast({ title: "Success", message: "Sửa sản phẩm thành công!", type: "success", duration: 3000, });
+    if (confirm("Bạn có chắc chắn muốn sửa thông tin sản phẩm ?") == true) {
+        toast({ title: "Success", message: "Sửa sản phẩm thành công!", type: "success", duration: 3000, });
+    }
     setDefaultValue();
     document.querySelector(".add-product").classList.remove("open");
     showProduct();
@@ -628,7 +630,7 @@ function createObj() {
 
 // Filter 
 function thongKe(mode) {
-    let arrDetail = createObj();  
+    let arrDetail = createObj();
     showThongKe(arrDetail, mode);
 }
 
@@ -781,9 +783,8 @@ function cancelSearchUser() {
 window.onload = showUser();
 
 function deleteAcount(phone) {
-    let accounts = JSON.parse(localStorage.getItem('accounts'));
     let index = accounts.findIndex(item => item.phone == phone);
-    if (confirm("Bạn có chắc muốn xóa?")) {
+    if (confirm("Bạn có chắc muốn xóa?") == true) {
         accounts.splice(index, 1)
     }
     localStorage.setItem("accounts", JSON.stringify(accounts));
@@ -811,7 +812,9 @@ function editAccount(phone) {
 
 updateAccount.addEventListener("click", (e) => {
     e.preventDefault();
-    toast({ title: 'Thành công', message: 'Thay đổi thông tin thành công !', type: 'success', duration: 3000 });
+    if (confirm("Bạn có chắc chắn muốn thay đổi thông tin người dùng ?") == true) {
+        toast({ title: 'Thành công', message: 'Thay đổi thông tin thành công !', type: 'success', duration: 3000 });
+    }
     document.querySelector(".signup").classList.remove("open");
     signUpFormReset();
     showUser();
@@ -827,6 +830,10 @@ addAccount.addEventListener("click", (e) => {
 
 document.getElementById("logout-acc").addEventListener('click', (e) => {
     e.preventDefault();
-    localStorage.removeItem("currentuser");
-    window.location.replay('./index.html');
+    if (confirm("Bạn có chắc chắn đăng xuất khỏi hệ thống ?") == true) 
+    {
+        localStorage.removeItem("currentuser");
+        window.location.replay('./index.html');
+    }
+    
 })

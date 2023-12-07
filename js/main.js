@@ -137,6 +137,7 @@ window.addEventListener("scroll", () => {
 
 // close searchAdvanced
 function closeSearchAdvanced() {
+    toast({ title: 'Success', message: 'Kết thúc tìm kiếm nâng cao thành công !', type: 'success', duration: 1500 });
     document.querySelector('#trangchu .home-slider').classList.remove("hide");
     document.querySelector('#home-service').style.display = "flex";
     document.querySelector('#home-title .home-title').innerHTML = "KHÁM PHÁ THỰC ĐƠN CỦA CHÚNG TÔI";
@@ -233,16 +234,19 @@ function kiemtradangnhap() {
 window.onload = kiemtradangnhap();
 
 function logOut() {
-    let accounts = JSON.parse(localStorage.getItem('accounts'));
-    user = JSON.parse(localStorage.getItem('currentuser'));
-    let vitri = accounts.findIndex(item => item.phone == user.phone)
-    accounts[vitri].cart.length = 0;
-    for (let i = 0; i < user.cart.length; i++) {
-        accounts[vitri].cart[i] = user.cart[i];
+    if (confirm("Bạn có chắc chắn muốn đăng xuất ?") == true) {
+        let accounts = JSON.parse(localStorage.getItem('accounts'));
+        user = JSON.parse(localStorage.getItem('currentuser'));
+        let vitri = accounts.findIndex(item => item.phone == user.phone)
+        accounts[vitri].cart.length = 0;
+        for (let i = 0; i < user.cart.length; i++) {
+            accounts[vitri].cart[i] = user.cart[i];
+        }
+        localStorage.setItem('accounts', JSON.stringify(accounts));
+        localStorage.removeItem('currentuser');
+        window.location = "./index.html";
     }
-    localStorage.setItem('accounts', JSON.stringify(accounts));
-    localStorage.removeItem('currentuser');
-    window.location = "./index.html";
+
 }
 
 
@@ -276,13 +280,18 @@ function emailIsValid(email) {
 
 // Thay doi thong tin
 function changeInformation() {
-    toast({ title: 'Success', message: 'Cập nhật thông tin thành công !', type: 'success', duration: 3000 });
+    if (confirm("Bạn có chắc chắn thay đổi thông tin này ?") == true) {
+        toast({ title: 'Success', message: 'Cập nhật thông tin thành công !', type: 'success', duration: 3000 });
+    }
 }
 
 
 // Đổi mật khẩu 
 function changePassword() {
-    toast({ title: 'Success', message: 'Đổi mật khẩu thành công !', type: 'success', duration: 3000 });
+    if (confirm("Bạn có chắc chắn muốn thay đổi mật khẩu không ?") == true) {
+        toast({ title: 'Success', message: 'Đổi mật khẩu thành công !', type: 'success', duration: 3000 });
+    }
+
 }
 
 
@@ -359,11 +368,14 @@ giaotannoi.addEventListener('click', () => {
 
 // Su kien khu nhan nut dat hang
 document.querySelector(".complete-checkout-btn").onclick = () => {
-    closeCart();
-    toast({ title: 'Thành công', message: 'Đặt hàng thành công !', type: 'success', duration: 1000 });
-    setTimeout((e) => {
-        window.location = "./index.html";
-    }, 2000);
+    if (confirm("Bạn có chắc chắn với thông tin đơn hàng ?") == true) {
+        closeCart();
+        toast({ title: 'Thành công', message: 'Đặt hàng thành công !', type: 'success', duration: 1000 });
+        setTimeout((e) => {
+            window.location = "./index.html";
+        }, 2000);
+    }
+
 }
 
 

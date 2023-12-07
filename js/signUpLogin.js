@@ -48,11 +48,14 @@ signupButton.addEventListener('click', () => {
         cart: [],
         userType: 0
     };
-    localStorage.setItem('currentuser', JSON.stringify(user));
-    toast({ title: 'Thành công', message: 'Tạo thành công tài khoản !', type: 'success', duration: 3000 });
-    setTimeout(() => {
-        window.location.replace('./index.html');
-    }, 1500);
+    if (confirm("Bạn có chắc chắn muốn đăng ký tài khoản ?") == true) {
+        localStorage.setItem('currentuser', JSON.stringify(user));
+        toast({ title: 'Thành công', message: 'Tạo thành công tài khoản !', type: 'success', duration: 3000 });
+        setTimeout(() => {
+            window.location.replace('./index.html');
+        }, 1500);
+    }
+
 })
 
 
