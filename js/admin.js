@@ -183,6 +183,20 @@ let products = [{
 // order list
 let orders = [
     {
+        "id": "VM1",
+        "khachhang": "0783374678",
+        "hinhthucgiao": "Giao tận nơi",
+        "ngaygiaohang": "Thu Dec 08 2023 10:30:00 GMT+0700 (Indochina Time)",
+        "thoigiangiao": "Giao ngay khi xong",
+        "ghichu": "nothing",
+        "tenguoinhan": "Van Minh",
+        "sdtnhan": "0783374678",
+        "diachinhan": "123124",
+        "thoigiandat": "2023-12-07T03:29:37.206Z",
+        "tongtien": 2703000,
+        "trangthai": 0
+    },
+    {
         "id": "DH2",
         "khachhang": "0783374678",
         "hinhthucgiao": "Tự đến lấy",
@@ -216,7 +230,11 @@ let orderDetails = [
     {"id":1,"price":200000,"soluong":1,"note":"Không có ghi chú","madon":"DH1"},
     {"id":2,"soluong":2,"note":"Không có ghi chú","madon":"DH2","price":180000},
     {"id":5,"soluong":3,"note":"Không có ghi chú","madon":"DH2","price":280000},
-    {"id":6,"soluong":3,"note":"Không có ghi chú","madon":"DH2","price":540000}
+    {"id":6,"soluong":3,"note":"Không có ghi chú","madon":"DH2","price":540000},
+    {"id":4,"soluong":2,"note":"Không có ghi chú","madon":"VM1","price":699000},
+    {"id":10,"soluong":5,"note":"Không có ghi chú","madon":"VM1","price":25000},
+    {"id":11,"soluong":3,"note":"Không có ghi chú","madon":"VM1","price":60000},
+    {"id":1,"soluong":5,"note":"Không có ghi chú","madon":"VM1","price":200000},
 ];
 
 
@@ -269,43 +287,11 @@ function vnd(price) {
     return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 }
 // Phân trang 
-let perPage = 5;
-let currentPage = 1;
-let totalPage = 0;
-let perProducts = [];
 
-function displayList(productAll, perPage, currentPage) {
-    let start = (currentPage - 1) * perPage;
-    let end = (currentPage - 1) * perPage + perPage;
-    let productShow = productAll.slice(start, end);
-    showProductArr(productShow);
+function displayList() {
+    showProductArr(products);
 }
 
-function setupPagination(productAll, perPage) {
-    document.querySelector('.page-nav-list').innerHTML = '';
-    let page_count = Math.ceil(productAll.length / perPage);
-    for (let i = 1; i <= page_count; i++) {
-        let li = paginationChange(i, productAll, currentPage);
-        document.querySelector('.page-nav-list').appendChild(li);
-    }
-}
-
-function paginationChange(page, productAll, currentPage) {
-    let node = document.createElement(`li`);
-    node.classList.add('page-nav-item');
-    node.innerHTML = `<a href="#">${page}</a>`;
-    if (currentPage == page) node.classList.add('active');
-    node.addEventListener('click', function () {
-        currentPage = page;
-        displayList(productAll, perPage, currentPage);
-        let t = document.querySelectorAll('.page-nav-item.active');
-        for (let i = 0; i < t.length; i++) {
-            t[i].classList.remove('active');
-        }
-        node.classList.add('active');
-    })
-    return node;
-}
 
 // Hiển thị danh sách sản phẩm 
 function showProductArr(arr) {
@@ -345,8 +331,7 @@ function showProductArr(arr) {
 }
 
 function showProduct() {
-    displayList(products, perPage, currentPage);
-    setupPagination(products, perPage, currentPage);
+    displayList();
 }
 
 function cancelSearchProduct() {
