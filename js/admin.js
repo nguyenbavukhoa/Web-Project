@@ -643,38 +643,8 @@ function createObj() {
 
 // Filter 
 function thongKe(mode) {
-    let categoryTk = document.getElementById("the-loai-tk").value;
-    let ct = document.getElementById("form-search-tk").value;
-    let timeStart = document.getElementById("time-start-tk").value;
-    let timeEnd = document.getElementById("time-end-tk").value;
-    if (timeEnd < timeStart && timeEnd != "" && timeStart != "") {
-        alert("Lựa chọn thời gian sai !");
-        return;
-    }
-    let arrDetail = createObj();
-    let result = categoryTk == "Tất cả" ? arrDetail : arrDetail.filter((item) => {
-        return item.category == categoryTk;
-    });
-
-    result = ct == "" ? result : result.filter((item) => {
-        return (item.title.toLowerCase().includes(ct.toLowerCase()));
-    });
-
-    if (timeStart != "" && timeEnd == "") {
-        result = result.filter((item) => {
-            return new Date(item.time) > new Date(timeStart).setHours(0, 0, 0);
-        });
-    } else if (timeStart == "" && timeEnd != "") {
-        result = result.filter((item) => {
-            return new Date(item.time) < new Date(timeEnd).setHours(23, 59, 59);
-        });
-    } else if (timeStart != "" && timeEnd != "") {
-        result = result.filter((item) => {
-            return (new Date(item.time) > new Date(timeStart).setHours(0, 0, 0) && new Date(item.time) < new Date(timeEnd).setHours(23, 59, 59)
-            );
-        });
-    }
-    showThongKe(result, mode);
+    let arrDetail = createObj();  
+    showThongKe(arrDetail, mode);
 }
 
 // Show số lượng sp, số lượng đơn bán, doanh thu
