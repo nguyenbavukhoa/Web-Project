@@ -382,3 +382,121 @@ function closecheckout() {
     body.style.overflow = "auto"
 }
 
+// Format Date
+function formatDate(date) {
+    let fm = new Date(date);
+    let yyyy = fm.getFullYear();
+    let mm = fm.getMonth() + 1;
+    let dd = fm.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    return dd + '/' + mm + '/' + yyyy;
+}
+
+// Chi tiết đơn hàng
+function detailOrder(id) {
+    let order = [
+        {
+            "id": "DH2",
+            "khachhang": "0783374678",
+            "hinhthucgiao": "Tự đến lấy",
+            "ngaygiaohang": "Thu Dec 07 2023 10:30:42 GMT+0700 (Indochina Time)",
+            "thoigiangiao": "",
+            "ghichu": "giao hang sau 5h chieu",
+            "tenguoinhan": "Vu Khoa",
+            "sdtnhan": "0783374678",
+            "diachinhan": "273 An Dương Vương, Phường 3, Quận 5",
+            "thoigiandat": "2023-12-07T03:31:18.143Z",
+            "tongtien": 2820000,
+            "trangthai": 0
+        },
+        {
+            "id": "DH1",
+            "khachhang": "0783374678",
+            "hinhthucgiao": "Giao tận nơi",
+            "ngaygiaohang": "Thu Dec 07 2023 10:29:06 GMT+0700 (Indochina Time)",
+            "thoigiangiao": "Giao ngay khi xong",
+            "ghichu": "nothing",
+            "tenguoinhan": "Vu Khoa",
+            "sdtnhan": "0783374678",
+            "diachinhan": "123124",
+            "thoigiandat": "2023-12-07T03:29:37.206Z",
+            "tongtien": 200000,
+            "trangthai": 0
+        }
+    ]
+    let detail = order.find(item => {
+        return item.id == id;
+    })
+    document.querySelector(".modal.detail-order").classList.add("open");
+    let detailOrderHtml = `<ul class="detail-order-group">
+        <li class="detail-order-item">
+            <span class="detail-order-item-left"><i class="fa-light fa-calendar-days"></i> Ngày đặt hàng</span>
+            <span class="detail-order-item-right">${formatDate(detail.thoigiandat)}</span>
+        </li>
+        <li class="detail-order-item">
+            <span class="detail-order-item-left"><i class="fa-light fa-truck"></i> Hình thức giao</span>
+            <span class="detail-order-item-right">${detail.hinhthucgiao}</span>
+        </li>
+        <li class="detail-order-item">
+            <span class="detail-order-item-left"><i class="fa-light fa-clock"></i> Ngày nhận hàng</span>
+            <span class="detail-order-item-right">${(detail.thoigiangiao == "" ? "" : (detail.thoigiangiao + " - ")) + formatDate(detail.ngaygiaohang)}</span>
+        </li>
+        <li class="detail-order-item">
+            <span class="detail-order-item-left"><i class="fa-light fa-location-dot"></i> Địa điểm nhận</span>
+            <span class="detail-order-item-right">${detail.diachinhan}</span>
+        </li>
+        <li class="detail-order-item">
+            <span class="detail-order-item-left"><i class="fa-thin fa-person"></i> Người nhận</span>
+            <span class="detail-order-item-right">${detail.tenguoinhan}</span>
+        </li>
+        <li class="detail-order-item">
+            <span class="detail-order-item-left"><i class="fa-light fa-phone"></i> Số điện thoại nhận</span>
+            <span class="detail-order-item-right">${detail.sdtnhan}</span>
+        </li>
+    </ul>`
+    document.querySelector(".detail-order-content").innerHTML = detailOrderHtml;
+}
+
+// Close popup 
+let modalContainer = document.querySelectorAll('.modal');
+let modalBox = document.querySelectorAll('.mdl-cnt');
+let formLogSign = document.querySelector('.forms');
+
+
+// Click vùng ngoài sẽ tắt Popup
+modalContainer.forEach(item => {
+    item.addEventListener('click', closeModal);
+});
+
+modalBox.forEach(item => {
+    item.addEventListener('click', function (event) {
+        event.stopPropagation();
+    })
+});
+
+function closeModal() {
+    modalContainer.forEach(item => {
+        item.classList.remove('open');
+    });
+    console.log(modalContainer)
+    body.style.overflow = "auto";
+}
+
+function increasingNumber(e) {
+    let qty = e.parentNode.querySelector('.input-qty');
+    if (parseInt(qty.value) < qty.max) {
+        qty.value = parseInt(qty.value) + 1;
+    } else {
+        qty.value = qty.max;
+    }
+}
+
+function decreasingNumber(e) {
+    let qty = e.parentNode.querySelector('.input-qty');
+    if (qty.value > qty.min) {
+        qty.value = parseInt(qty.value) - 1;
+    } else {
+        qty.value = qty.min;
+    }
+}
