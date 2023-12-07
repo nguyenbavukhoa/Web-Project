@@ -4,14 +4,12 @@
 - Nguyễn Ngô Thanh Tú - 3122411231
 - Vũ Văn Minh - 3122411129
 
-
 ### Demo
 
-### Link page (Tụi em chạy ở 1 project khác)
+### Link page
 https://nguyenbavukhoa.github.io/Web-demo/
 
 ### Hình ảnh giao diện
-![Alt text](KTMfood.png)
 
 ### Ảnh chi tiết sản phầm
 ![Alt text](detailProduct.png)
