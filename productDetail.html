@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="assets/CSS/header.css" />
     <link rel="stylesheet" href="assets/CSS/main-menu.css" />
     <link rel="stylesheet" href="assets/CSS/footer.css" />
+    <link rel="stylesheet" href="assets/CSS/toast-message.css">
     <link rel="stylesheet" href="assets/CSS/home-reponsive.css" />
     <link rel="stylesheet" href="./assets/fonts/font-awesome-pro-v6-6.2.0/css/all.min.css" />
 </head>
@@ -88,7 +89,7 @@
                     <h1 class="name"></h1>
                     <div class="price"></div>
                     <div class="center">
-                        <button class="order-button">
+                        <button class="order-button" onclick="datmon()">
                             <i class='bx bx-cart'></i>
                             <p>Đặt món</p>
                         </button>
@@ -251,8 +252,10 @@
             </div>
         </div>
     </div>
+    <div id="toast"></div>
     <script src="./js/detailProduct.js"></script>
     <script src="./js/main.js"></script>
+    <script src="./js/toast-message.js"></script>
 </body>
 
 </html>
