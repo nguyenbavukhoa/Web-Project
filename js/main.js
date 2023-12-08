@@ -189,7 +189,7 @@ function uploadProduct(showProduct) {
                     </p>
                     <p class="product-price">${product.price} &#8363;</p>
                     <div class="center">
-                        <button class="order-button">
+                        <button class="order-button" onclick="datmon()">
                             <i class="bx bx-cart"></i>
                             <p>Đặt món</p>
                         </button>
@@ -511,4 +511,8 @@ function decreasingNumber(e) {
     } else {
         qty.value = qty.min;
     }
+}
+
+function datmon() {
+    toast({ title: 'Thành công', message: 'Đặt món thành công !', type: 'success', duration: 3000 });
 }
