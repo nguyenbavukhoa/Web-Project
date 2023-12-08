@@ -153,3 +153,7 @@ function decreasingNumber(e) {
         qty.value = qty.min;
     }
 }
+
+function datmon() {
+    toast({ title: 'Thành công', message: 'Đặt món thành công !', type: 'success', duration: 3000 });
+}
